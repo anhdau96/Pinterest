@@ -47,11 +47,6 @@ public class PinMain {
             } else {
                 System.out.println("Link null");
             }
-            try {
-                Thread.sleep(1800000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(PinMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
 }

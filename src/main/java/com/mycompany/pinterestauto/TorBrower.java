@@ -41,7 +41,7 @@ public class TorBrower {
         profile.setPreference("network.proxy.type", 1);
         profile.setPreference("network.proxy.socks", "127.0.0.1");
         profile.setPreference("network.proxy.socks_port", 9150);
-        profile.setPreference("browser.privatebrowsing.autostart", true);
+//        profile.setPreference("browser.privatebrowsing.autostart", true);
         profile.setPreference("browser.cache.disk.enable", false);
         profile.setPreference("browser.cache.memory.enable", true);
         profile.setPreference("browser.cache.offline.enable", false);

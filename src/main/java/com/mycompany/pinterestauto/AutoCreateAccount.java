@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -46,10 +45,10 @@ public class AutoCreateAccount {
     }
 
     public void createAccount(String acc, String password) {
-//        TorBrower myDriver = new TorBrower(); su dung tor
-//        FirefoxDriver driver = myDriver.getTorDriver();
-        MyDriver myDriver = new MyDriver(); // Su dung chrome 
-        WebDriver driver = myDriver.getDriver(); // Su dung chrome 
+        TorBrower myDriver = new TorBrower(); //su dung tor
+        FirefoxDriver driver = myDriver.getTorDriver();
+//        MyDriver myDriver = new MyDriver(); // Su dung chrome 
+//        WebDriver driver = myDriver.getDriver(); // Su dung chrome 
         driver.get("https://www.pinterest.com/");
         WebElement userName = driver.findElement(By.name("id"));
         userName.sendKeys(acc);
@@ -62,7 +61,7 @@ public class AutoCreateAccount {
         } catch (InterruptedException ex) {
             Logger.getLogger(AutoCreateAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
-        driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         WebElement age = driver.findElement(By.name("age"));
         WebElement fullName = driver.findElements(By.tagName("input")).get(0);
         fullName.sendKeys("Sun Tshirt");
@@ -124,8 +123,8 @@ public class AutoCreateAccount {
         }
         driver.switchTo().window(fisrt);
         String token = driver.findElements(By.tagName("input")).get(4).getAttribute("value");
-        myDriver.quitDriver();
-//        myDriver.quitTor();
+//        myDriver.quitDriver();
+        myDriver.quitTor();
 //        FileController controller = new FileController();
         AccountController ac = new AccountController();
         ac.create(new Account(0, acc, password, token, "0", "0"));
