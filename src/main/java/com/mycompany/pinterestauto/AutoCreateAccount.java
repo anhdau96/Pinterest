@@ -14,8 +14,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
  *
@@ -25,10 +25,10 @@ public class AutoCreateAccount {
 
     public static void main(String[] args) {
         AutoCreateAccount account = new AutoCreateAccount();
-        for (int i = 0; i < 17; i++) {
+//        for (int i = 0; i < 17; i++) {
             String randomAcc = account.randomAcc();
             account.createAccount(String.valueOf(System.currentTimeMillis()) + "@" + randomAcc + ".com", "Tshirt1234");
-        }
+//        }
 //        account.createAccount("1494046367650@ijvbljyaxnmdpgu.com", "Tshirt1234");
     }
 
@@ -45,10 +45,15 @@ public class AutoCreateAccount {
     }
 
     public void createAccount(String acc, String password) {
-        TorBrower myDriver = new TorBrower(); //su dung tor
-        FirefoxDriver driver = myDriver.getTorDriver();
-//        MyDriver myDriver = new MyDriver(); // Su dung chrome 
-//        WebDriver driver = myDriver.getDriver(); // Su dung chrome 
+//        TorBrower myDriver = new TorBrower(); //su dung tor
+//        FirefoxDriver driver = myDriver.getTorDriver();
+        MyDriver myDriver = new MyDriver(); // Su dung chrome 
+        WebDriver driver = myDriver.getDriver(); // Su dung chrome 
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(AutoCreateAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
         driver.get("https://www.pinterest.com/");
         WebElement userName = driver.findElement(By.name("id"));
         userName.sendKeys(acc);
@@ -123,8 +128,8 @@ public class AutoCreateAccount {
         }
         driver.switchTo().window(fisrt);
         String token = driver.findElements(By.tagName("input")).get(4).getAttribute("value");
-//        myDriver.quitDriver();
-        myDriver.quitTor();
+        myDriver.quitDriver();
+//        myDriver.quitTor();
 //        FileController controller = new FileController();
         AccountController ac = new AccountController();
         ac.create(new Account(0, acc, password, token, "0", "0"));
