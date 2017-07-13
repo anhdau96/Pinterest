@@ -28,25 +28,30 @@ public class PinMain {
             if (pinLinks != null) {
                 for (LinkPin pinLink : pinLinks) {
                     List<Account> accounts = accountController.getAllAccount();
-                    boolean check = true;
+                    boolean check = false;
                     do {
                         for (Account account : accounts) {
                             if (Long.parseLong(account.getLastPin()) + Long.parseLong(account.getNextTime()) < System.currentTimeMillis()) {
                                 pinPost.pin(pinLink.getLink(), pinLink.getImg(), account.getToken(), pinLink.getNote());
-                                int nextTime = (int) (Math.random() * (60000 - 30000)) + 30000;
+                                int nextTime = (int) (Math.random() * (300000 - 30000)) + 30000;
                                 System.out.println(account.getId());
                                 accountController.updateNextPin(account.getId(), String.valueOf(System.currentTimeMillis()), String.valueOf(nextTime));
-                                //linkController.updateLinkPin(pinLink.getId(), account.getId());
+                                linkController.updateLinkPin(pinLink.getId());
                                 System.out.println("Pin: " + pinLink.getLink());
-                                check = false;
+                                check = true;
                                 break;
                             }
                         }
-                    } while (check);
+                    } while (!check);
                 }
             } else {
                 System.out.println("Link null");
             }
+//            try {
+//                Thread.sleep(600000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(PinMain.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
     }
 }

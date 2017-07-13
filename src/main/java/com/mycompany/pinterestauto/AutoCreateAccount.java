@@ -25,18 +25,19 @@ public class AutoCreateAccount {
 
     public static void main(String[] args) {
         AutoCreateAccount account = new AutoCreateAccount();
-//        for (int i = 0; i < 17; i++) {
-            String randomAcc = account.randomAcc();
-            account.createAccount(String.valueOf(System.currentTimeMillis()) + "@" + randomAcc + ".com", "Tshirt1234");
-//        }
+        for (int i = 0; i < 2; i++) {
+            String randomdomain = account.randomAcc(7);
+            String randomAcc = account.randomAcc(2);
+            account.createAccount(String.valueOf(System.currentTimeMillis())+randomAcc + "@" + randomdomain + ".com", "Tshirt1234");
+        }
 //        account.createAccount("1494046367650@ijvbljyaxnmdpgu.com", "Tshirt1234");
     }
 
-    public String randomAcc() {
+    public String randomAcc(int index) {
         char[] chars = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         StringBuilder sb = new StringBuilder();
         Random random = new Random();
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < index; i++) {
             char c = chars[random.nextInt(chars.length)];
             sb.append(c);
         }
@@ -49,6 +50,7 @@ public class AutoCreateAccount {
 //        FirefoxDriver driver = myDriver.getTorDriver();
         MyDriver myDriver = new MyDriver(); // Su dung chrome 
         WebDriver driver = myDriver.getDriver(); // Su dung chrome 
+        ConnectExtension.clickConnect();
         try {
             Thread.sleep(5000);
         } catch (InterruptedException ex) {
@@ -62,25 +64,20 @@ public class AutoCreateAccount {
         WebElement submit = driver.findElement(By.cssSelector("button[class='red SignupButton active']"));
         submit.submit();
         try {
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (InterruptedException ex) {
             Logger.getLogger(AutoCreateAccount.class.getName()).log(Level.SEVERE, null, ex);
         }
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         WebElement age = driver.findElement(By.name("age"));
         WebElement fullName = driver.findElements(By.tagName("input")).get(0);
-        fullName.sendKeys("Sun Tshirt");
+        fullName.sendKeys(randomAcc(5) + " " + randomAcc(6));
         age.sendKeys("25");
         driver.findElement(By.cssSelector("input[value='male']")).click();
         WebElement register = driver.findElement(By.cssSelector("button[class='red comeOnInButton active']"));
         register.submit();
         try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(AutoCreateAccount.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             WebElement skipContent = driver.findElement(By.cssSelector("button[class='noButtonStyles active']"));
             skipContent.click();
             driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -134,7 +131,6 @@ public class AutoCreateAccount {
         AccountController ac = new AccountController();
         ac.create(new Account(0, acc, password, token, "0", "0"));
 //        controller.writeAccountToFile(acc, password, token);
-
     }
 
 //    public String getToken(String user, String password) {

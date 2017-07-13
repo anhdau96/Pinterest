@@ -23,7 +23,7 @@ public class AccountController {
     public void create (Account account){
         ConnectDB connectDB = new ConnectDB();
         try {
-            Connection connect = connectDB.getConnect();
+            Connection connect = connectDB.getConnectAcc();
             PreparedStatement pst = connect.prepareStatement("INSERT INTO users(userName, pass, token, lastpin, nexttime) VALUES (?,?,?,?,?)");
             pst.setString(1, account.getUser());
             pst.setString(2, account.getPass());
@@ -31,7 +31,7 @@ public class AccountController {
             pst.setString(4, account.getLastPin());
             pst.setString(5, account.getNextTime());
             pst.execute();
-            connectDB.closeConnect();
+            connectDB.closeConnectAcc();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -40,14 +40,14 @@ public class AccountController {
     public List<Account> getAllAccount(){
         ConnectDB connectDB = new ConnectDB();
         try {
-            Connection connect = connectDB.getConnect();
-            PreparedStatement pst = connect.prepareStatement("SELECT * FROM users");
+            Connection connect = connectDB.getConnectAcc();
+            PreparedStatement pst = connect.prepareStatement("SELECT * FROM users WHERE id >84");
             ResultSet rs = pst.executeQuery();
             List<Account> lstAcc = new ArrayList<>();
             while(rs.next()){
                 lstAcc.add(new Account(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)));
             }
-            connectDB.closeConnect();
+            connectDB.closeConnectAcc();
             return lstAcc;
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
@@ -58,13 +58,13 @@ public class AccountController {
     public void updateNextPin(int idAcc, String lastPin, String nextPin){
         ConnectDB connectDB = new ConnectDB();
         try {
-            Connection connect = connectDB.getConnect();
-            PreparedStatement pst = connect.prepareStatement("UPDATE users SET lastpin = ?, nexttime = ? WHERE id = ?");
+            Connection connect = connectDB.getConnectAcc();
+            PreparedStatement pst = connect.prepareStatement("UPDATE users SET lastpin = ?, nexttime = ?, count_pin = count_pin+1 WHERE id = ?");
             pst.setString(1, lastPin);
             pst.setString(2, nextPin);
             pst.setInt(3, idAcc);
             pst.execute();
-            connectDB.closeConnect();
+            connectDB.getConnectAcc();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
         }

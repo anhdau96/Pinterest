@@ -23,14 +23,22 @@ public class PinLinkController {
     public List<LinkPin> getLinkPin(){
         ConnectDB connectDB = new ConnectDB();
         try {
-            Connection connect = connectDB.getConnect();
-            PreparedStatement pst = connect.prepareStatement("SELECT * FROM pin_link WHERE check_pin = 0 LIMIT 100");
+            Connection connect = connectDB.getConnectLink();
+            PreparedStatement pst = connect.prepareStatement("SELECT * FROM links WHERE check_pin = 0 LIMIT 200");
             ResultSet rs = pst.executeQuery();
             List<LinkPin> lstLink = new ArrayList<>();
             while(rs.next()){
-                lstLink.add(new LinkPin(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getByte(5), rs.getInt(6)));
+                String img = null;
+                String[] splits = rs.getString(3).split("\"");
+                for (String split : splits) {
+                    if (split.contains("http")) {
+                        img = split;
+                        break;
+                    }
+                }
+                lstLink.add(new LinkPin(rs.getInt(1), rs.getString(4), img, rs.getString(5).concat(" "+ rs.getString(6)), rs.getByte(9)));
             }
-            connectDB.closeConnect();
+            connectDB.closeConnectLink();
             return lstLink;
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(PinLinkController.class.getName()).log(Level.SEVERE, null, ex);
@@ -38,15 +46,14 @@ public class PinLinkController {
         return null;
     }
     
-    public void updateLinkPin(int idlink, int idAcc){
+    public void updateLinkPin(int idlink){
         ConnectDB connectDB = new ConnectDB();
         try {
-            Connection connect = connectDB.getConnect();
-            PreparedStatement pst = connect.prepareStatement("UPDATE pin_link SET check_pin = 1, users_id = ? WHERE id = ?");
-            pst.setInt(1, idAcc);
-            pst.setInt(2, idlink);
+            Connection connect = connectDB.getConnectLink();
+            PreparedStatement pst = connect.prepareStatement("UPDATE links SET check_pin = 1 WHERE id = ?");
+            pst.setInt(1, idlink);
             pst.execute();
-            connectDB.closeConnect();
+            connectDB.closeConnectLink();
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -24,11 +24,13 @@ public class MyDriver {
         DesiredCapabilities caps = DesiredCapabilities.chrome();
         ChromeOptions options = new ChromeOptions();
         options.addExtensions(new File("extension.crx"));
+        options.addArguments("--enable-extensions");
         caps.setCapability(ChromeOptions.CAPABILITY, options);
         //caps.setJavascriptEnabled(false);
         
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         driver = new ChromeDriver(caps);
+        
         return driver;
     }
 

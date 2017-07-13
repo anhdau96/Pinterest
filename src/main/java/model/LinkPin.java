@@ -15,7 +15,6 @@ public class LinkPin {
     private String img;
     private String note;
     private byte checkPin;
-    private int userId;
 
     public int getId() {
         return id;
@@ -33,26 +32,18 @@ public class LinkPin {
         this.checkPin = checkPin;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
     public LinkPin(String link, String img) {
         this.link = link;
         this.img = img;
     }
 
-    public LinkPin(int id, String link, String img, String note, byte checkPin, int userId) {
+    public LinkPin(int id, String link, String img, String note, byte checkPin) {
         this.id = id;
         this.link = link;
         this.img = img;
         this.note = note;
         this.checkPin = checkPin;
-        this.userId = userId;
     }
     
     public String getLink() {
@@ -78,10 +69,10 @@ public class LinkPin {
     public void setNote(String note) {
         this.note = note;
     }
-    
+
     @Override
     public String toString() {
-        return "LinkPin{" + "link=" + link + ", img=" + img + '}';
+        return "LinkPin{" + "id=" + id + ", link=" + link + ", img=" + img + ", note=" + note + ", checkPin=" + checkPin + '}';
     }
     
 }
